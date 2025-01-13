@@ -19,7 +19,7 @@ export class TelegramChatComponent {
   private chatId = '-4651452894'; // Thay chatId thật vào đây
   private telegramApiUrl = `https://api.telegram.org/bot${this.botToken}/sendMessage`;
   private getUpdatesUrl = `https://api.telegram.org/bot${this.botToken}/getUpdates`;
-  private setWebhookUrl = `https://api.telegram.org/bot${this.botToken}/setWebhook?url=https://yourserver.com/telegram-webhook`; // Thay đổi URL webhook của bạn
+  private setWebhookUrl = `https://api.telegram.org/bot${this.botToken}/setWebhook?url=https://booking-website-five.vercel.app/webhook`; // Thay đổi URL webhook của bạn
 
   isChatOpen: boolean = false;
 
