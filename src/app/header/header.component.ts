@@ -21,9 +21,9 @@ export class HeaderComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {}
 
   onLogout() {
-    this.authService.logout(); // Đăng xuất
-    this.email = null; // Đặt lại giá trị email sau khi đăng xuất
-    localStorage.removeItem('email'); // Xóa email trong localStorage
-    this.router.navigate(['/login']); // Chuyển hướng đến trang đăng nhập
+    this.authService.logout();
+    this.email = null; 
+    localStorage.removeItem('email'); 
+    this.router.navigate(['/login']); 
   }
 }

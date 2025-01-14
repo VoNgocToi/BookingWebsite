@@ -20,6 +20,7 @@ export class AuthService {
     const body = { email, password, retypePassword, userName, genDer, address};
     return this.http.post(this.apiUrlRegister, body, { responseType: 'text' }) ;
   }
+
   loginUser(email: string, password: string): Observable<any> {
     const body = { email, password };
     return this.http.post<string>('http://localhost:8080/api/auth/login', body, {
@@ -42,6 +43,9 @@ export class AuthService {
     );
   }
   
+  
+  
+
   isAuthenticated(): boolean {
     return !!localStorage.getItem('token');
   }
@@ -62,6 +66,7 @@ export class AuthService {
   localStorage.removeItem('email'); // Xóa email trong localStorage khi đăng xuất
   localStorage.removeItem('user');
     }
+
   // Lưu thông tin người dùng vào localStorage
   saveUserToLocalStorage(user: any, token: string) {
     localStorage.setItem('token', token); // Lưu token
@@ -79,10 +84,6 @@ export class AuthService {
     localStorage.removeItem('user');
   }
 
-  // getUserRole(): string | null {
-  //   const user = this.getUserFromToken();
-  //   return user ? user.role : null;
-  // }
   getUserRole(): string | null {
     const token = localStorage.getItem('token');  // Lấy token từ localStorage
     if (!token) {

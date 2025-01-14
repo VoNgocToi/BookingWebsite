@@ -12,6 +12,7 @@ export class SpecialtyService {
   private apiUrl = 'http://localhost:8080/api/specialties';
 
   constructor(private http: HttpClient, private authService: AuthService) { }
+  
   getSpecialties(): Observable<any> {
     const token = this.authService.getToken();
     if (!token) {

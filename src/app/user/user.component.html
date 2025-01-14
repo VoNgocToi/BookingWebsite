@@ -83,7 +83,7 @@
                     <div class="row">
                         <div class="col-md-1212 mb-3">
                             <label for="password" class="form-label">Mật khẩu</label>
-                            <input type="password" class="form-control" id="password" [(ngModel)]="newUser.password" name="password" [disabled]="isEditMode" placeholder="Nhập mật khẩu người dùng" required>
+                            <input type="password" class="form-control" id="password" [(ngModel)]="newUser.password" name="password" [disabled]="isEditMode" placeholder="Nhập mật khẩu người dùng" >
                         </div>
                         
                     </div>
@@ -95,6 +95,7 @@
                 <table class="table table-striped shadow-sm">
                     <thead class="table-header">
                         <tr>
+                            <th>Id</th>
                             <th>Họ và tên</th>
                             <th>Email</th>
                             <th>Số điện thoại</th>
@@ -106,6 +107,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let user of users">
+                            <td>{{ user.id }}</td>
                             <td>{{ user.userName }}</td>
                             <td>{{ user.email }}</td>
                             <td>{{ user.phoneNumber }}</td>

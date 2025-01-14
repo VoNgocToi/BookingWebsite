@@ -19,12 +19,12 @@ import { GioiThieuComponent } from './gioi-thieu/gioi-thieu.component';
 import { LienHeComponent } from './lien-he/lien-he.component';
 import { UserBookingDetailsComponent } from './user-bookingdetails/user-bookingdetails.component';
 import { DoctorScheduleComponent } from './doctor-schedule/doctor-schedule.component';
-import { StatisticalComponent } from './statistical/statistical.component';
 import { AuthGuard } from './authgual/authgual.component';
 import { UnauthorizedComponent } from './authgual/unauthorized.component';
 import { SidebarAdminComponent } from './sidebar-admin/sidebar-admin.component';
 import { SidebarDoctorComponent } from './sidebar-doctor/sidebar-doctor.component';
 import { TongQuanComponent } from './tong-quan/tong-quan.component';
+import { StatisticsComponent } from './statistics/statistics.component';
 
 export const routes: Routes = [
     {
@@ -56,7 +56,7 @@ export const routes: Routes = [
           { path: 'specialty', component: SpecialtyComponent },
           { path: 'time-slot', component: TimeSlotComponent },
           { path: 'doctor', component: DoctorComponent },
-          { path: 'statistical', component: StatisticalComponent },
+          { path: 'statistics', component: StatisticsComponent },
           { path: 'tong-quan', component: TongQuanComponent },
           { path: 'doctor-schedule', component: DoctorScheduleComponent },
           { path: 'history', component: HistoryComponent },

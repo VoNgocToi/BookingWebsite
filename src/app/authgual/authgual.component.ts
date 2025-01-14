@@ -23,6 +23,15 @@ export class AuthGuard implements CanActivate {
       return false;
     }
 
+    if (state.url === '/admindb') {
+      this.router.navigate(['/admindb/tong-quan']);
+      return false;
+    }
+    if (state.url === '/doctordb') {
+      this.router.navigate(['/doctordb/doctor-schedule']);
+      return false;
+    }
+
     return true;
   }
 }
