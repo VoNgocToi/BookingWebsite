@@ -161,8 +161,9 @@ export class HistoryComponent implements OnInit {
       const userId = this.selectedHistory.userId; 
       this.historyService.createHistory(userId, this.selectedHistory)
         .subscribe((history: Histories) => { // Kiểm tra dữ liệu trả về từ backend
-          this.histories.push(history); // Thêm vào danh sách
+          this.histories.unshift(history); // Thêm vào danh sách
           this.resetSelectedHistory();
+          this.updatePaginatedHistories();
         });
     }
   }

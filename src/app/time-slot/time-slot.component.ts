@@ -95,11 +95,7 @@ export class TimeSlotComponent implements OnInit {
     }
   }
 
-  updatePaginatedTimeSlots(): void {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.paginatedTimeSlots = this.timeSlots.slice(startIndex, endIndex);
-  }
+  
 
   // Khi chọn lịch trình, lấy timeSlots của lịch trình đó
   onScheduleSelect(scheduleId: number): void {
@@ -243,6 +239,12 @@ saveUpdatedTimeSlot(): void {
         console.error('Lỗi khi xóa timeSlot:', error);
       }
     );
+  }
+
+  updatePaginatedTimeSlots(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedTimeSlots = this.timeSlots.slice(startIndex, endIndex);
   }
 
   previousPage(): void {

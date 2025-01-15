@@ -6,8 +6,8 @@ import { Router } from '@angular/router'
 import { tap, catchError } from 'rxjs/operators';  
 import { BookingApiResponse } from '../model/bookingResponse.model';
 import { of } from 'rxjs';
-import { ToastrService } from 'ngx-toastr';
 import Swal from 'sweetalert2';
+import { Booking } from '../model/booking.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +16,7 @@ export class BookingService {
 
   private apiUrl = 'http://localhost:8080/api/bookings';  // Địa chỉ API của bạn
 
-  constructor(private http: HttpClient, private authService: AuthService, private router: Router, private toastr: ToastrService) {}
+  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {}
 
   private getAuthHeaders(): HttpHeaders {
     const token = this.authService.getToken();  // Lấy token từ AuthService
@@ -43,6 +43,9 @@ export class BookingService {
     return this.http.get(`${this.apiUrl}/available-times?specialtyId=${specialtyId}&doctorId=${doctorId}&date=${date}`, { headers });
   }
   
+  getBookingStats(): Observable<Booking[]> {
+    return this.http.get<Booking[]>(this.apiUrl);
+  }
 
   // Tạo cuộc hẹn
   createBooking(bookingData: any): Observable<BookingApiResponse> {
