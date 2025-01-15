@@ -116,9 +116,7 @@
 
               <div class="col-md-6 mb-3">
                 <label for="doctor" class="form-label">Chọn bác sĩ</label>
-                <select
-                  class="form-control"
-                  id="doctor"
+                <select class="form-control" id="doctor"
                   [(ngModel)]="editableTimeSlot.doctorId"
                   name="doctorId"
                   (change)="onDoctorSelect()"
@@ -136,13 +134,11 @@
                   class="form-control"
                   id="schedule"
                   [(ngModel)]="editableTimeSlot.scheduleId"
-                  name="schedule"
+                  name="scheduleId"
                 >
-                  <option
-                    *ngFor="let schedule of schedules"
-                    [ngValue]="schedule.id"
-                  >
-                    {{ schedule.id }}
+                
+                  <option *ngFor="let schedule of schedules"[ngValue]="schedule.id">
+                    {{ schedule.date }}
                   </option>
                 </select>
               </div>
@@ -212,7 +208,6 @@
               </thead>
               <tbody>
                 <tr *ngFor="let timeslot of paginatedTimeSlots; let i = index">
-                  
                   <td>{{ getDoctorName(timeslot.doctorId) }}</td>
                   <td>{{ timeslot.scheduleDate }}</td>
                   <td>{{ timeslot.startTime }} - {{ timeslot.endTime }}</td>

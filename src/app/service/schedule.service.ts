@@ -19,7 +19,11 @@ export class ScheduleService {
           const token = this.authService.getToken();  // Lấy token từ AuthService
           return new HttpHeaders().set('Authorization', `Bearer ${token}`);
         }
-
+  getAllSchedule(): Observable<Schedule[]> {
+          const headers = this.getAuthHeaders();
+          return this.http.get<Schedule[]>(`${this.apiUrl}/all-schedule`, { headers });
+       }
+       
   getSchedulesByDoctorId(doctorId: number): Observable<Schedule[]> {
     const headers = this.getAuthHeaders();
     return this.http.get<Schedule[]>(`${this.apiUrl}/schedule/${doctorId}`,{ headers });

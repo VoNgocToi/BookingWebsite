@@ -30,13 +30,26 @@ export class TimeSlotComponent implements OnInit {
     endTime: '',
     doctorId: 0,
     doctorName: '',
-    scheduleId: null,
+    scheduleId: 0,
     scheduleDate: new Date(),
     isAvailable: true,
     createdAt: new Date(),
     updatedAt: new Date()
   };  // Thông tin timeSlot mới
 
+  doctorId: number | null = null;
+  editableTimeSlot: TimeSlot = {   // Khởi tạo với doctorId là null
+    id: 0,
+    startTime: '',
+    endTime: '',
+    doctorId: 0,
+    doctorName: '',
+    scheduleId: 0,
+    scheduleDate: new Date(),
+    isAvailable: true,
+    createdAt: new Date(),
+    updatedAt: new Date()
+  };
   currentPage: number = 1; // Trang hiện tại
   itemsPerPage: number = 5; // Số hàng trên mỗi trang
   paginatedTimeSlots: TimeSlot[] = []; // Danh sách timeSlots đã phân trang
@@ -49,14 +62,17 @@ export class TimeSlotComponent implements OnInit {
 
 
   ngOnInit(): void {
-    // Lấy danh sách bác sĩ khi component khởi tạo
     this.doctorService.getAllDoctors().subscribe(doctors => {
       this.doctors = doctors;
-      // Gán doctorId là id của bác sĩ đầu tiên (nếu có bác sĩ)
-      if (this.doctors.length > 0) {
-        this.newTimeSlot.doctorId = this.doctors[0].id;  // Chỉ gán id, không phải đối tượng
-      }
-    });
+      console.log('Doctors loaded:', this.doctors);
+    }
+  );
+  this.scheduleService.getAllSchedule().subscribe(schedules => {
+    this.schedules = schedules;
+    // Gán doctorId là id của bác sĩ đầu tiên (nếu có bác sĩ)
+    
+  }
+);
     this.loadUsers();
   }
 
@@ -68,7 +84,7 @@ export class TimeSlotComponent implements OnInit {
     }
   // Khi chọn bác sĩ, lấy lịch trình của bác sĩ đó
   onDoctorSelect(): void {
-    const doctorId = this.newTimeSlot.doctorId;
+    const doctorId = this.editableTimeSlot.doctorId;
     console.log('Selected doctorId:', doctorId);
     if (doctorId) {
       // Cập nhật doctorId trong newTimeSlot khi chọn bác sĩ
@@ -128,7 +144,7 @@ export class TimeSlotComponent implements OnInit {
                   endTime: '',
                   doctorId: 0,
                   doctorName: '',
-                  scheduleId: null,
+                  scheduleId: 0,
                   scheduleDate: new Date(),
                   isAvailable: true,
                   createdAt: new Date(),
@@ -159,13 +175,13 @@ export class TimeSlotComponent implements OnInit {
   }
  
   
-  // Cập nhật timeSlot
-  editableTimeSlot: TimeSlot | null = null; // Biến để lưu thông tin timeSlot đang chỉnh sửa
-
 editTimeSlot(id: number): void {
   const timeSlot = this.timeSlots.find(ts => ts.id === id);
   if (timeSlot) {
     this.editableTimeSlot = { ...timeSlot }; // Tạo một bản sao để chỉnh sửa
+    console.log('gia tri schedules', this.schedules);
+    console.log('gia tri doctors', this.doctors);
+    console.log('editableTimeSlot:', this.editableTimeSlot);
   } else {
     console.error('Không tìm thấy timeSlot với ID:', id);
   }
@@ -181,7 +197,19 @@ saveUpdatedTimeSlot(): void {
         if (index !== -1) {
           this.timeSlots[index] = updated; // Cập nhật danh sách timeSlots
         }
-        this.editableTimeSlot = null; // Đóng form
+        this.editableTimeSlot = {   // Khởi tạo với doctorId là null
+          id: 0,
+          startTime: '',
+          endTime: '',
+          doctorId: 0,
+          doctorName: '',
+          scheduleId: 0,
+          scheduleDate: new Date(),
+          isAvailable: true,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        };
+        this.loadUsers() // Đóng form
       },
       (error) => {
         console.error('Lỗi khi cập nhật timeSlot:', error);

@@ -71,17 +71,17 @@ export class DoctorComponent implements OnInit {
   // Thêm bác sĩ mới
   addDoctor() {
     if (!this.isValidDoctor(this.newDoctor)) return;
-    
     if (!this.newDoctor.password || this.newDoctor.password.length < 6) {
       alert('Mật khẩu phải có ít nhất 6 ký tự.');
       return;
     }
-
     this.doctorService.createDoctors(this.newDoctor).subscribe((newDoctor) => {
       this.doctors.push(newDoctor);
+      this.updatePaginatedDoctors();
       this.resetForm();
     });
   }
+  
 
   // Chỉnh sửa bác sĩ
   editDoctor(doctor: Doctor) {
