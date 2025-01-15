@@ -38,8 +38,6 @@ export class DoctorScheduleComponent implements OnInit {
       },
       
     });
-
-    
   }
 
   // API gọi lấy timeslot theo doctorId
@@ -63,8 +61,6 @@ export class DoctorScheduleComponent implements OnInit {
     });
   }
 
-  
-
   updateBooking(id: number): void {
     this.doctorScheduleService.putStatusBooking(id).subscribe({
         next: () => {
@@ -75,5 +71,5 @@ export class DoctorScheduleComponent implements OnInit {
             alert('Lỗi');
         },
     });
-}
+  }
 }

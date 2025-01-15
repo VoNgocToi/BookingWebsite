@@ -34,6 +34,10 @@ export class BookingComponent implements OnInit {
     updatedAt: new Date,
   }
 
+  currentPage: number = 1; // Trang hiện tại
+    itemsPerPage: number = 5; // Số hàng trên mỗi trang
+    paginatedBookings: Booking[] = [];
+
   constructor(private bookingService: AdminBookingService) {}
 
   ngOnInit(): void {
@@ -45,6 +49,7 @@ export class BookingComponent implements OnInit {
     this.bookingService.getAllBookings().subscribe(
       (data: Booking[]) => {
         this.bookings = data;
+        this.updatePaginatedBookings();
       },
       (error) => {
         console.error('Error fetching bookings', error);
@@ -114,5 +119,29 @@ export class BookingComponent implements OnInit {
       case 'NOT_ATTENDED': return 'Không tham gia';
       default: return 'Không xác định';
     }
+  }
+
+  updatePaginatedBookings(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedBookings = this.bookings.slice(startIndex, endIndex);
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedBookings();
+    }
+  }
+  
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.updatePaginatedBookings();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.bookings.length / this.itemsPerPage);
   }
 }

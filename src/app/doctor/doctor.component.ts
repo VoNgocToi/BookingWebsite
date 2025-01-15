@@ -35,6 +35,10 @@ export class DoctorComponent implements OnInit {
   isEditMode: boolean = false;
   errorMessages: string[] = [];  // Mảng chứa thông báo lỗi
 
+  currentPage: number = 1; // Trang hiện tại
+    itemsPerPage: number = 5; // Số hàng trên mỗi trang
+    paginatedDoctors: Doctor[] = [];
+
   constructor(private doctorService: DoctorService, private specialtyService: SpecialtyService) { }
 
   ngOnInit() {
@@ -45,6 +49,7 @@ export class DoctorComponent implements OnInit {
   loadDoctors() {
     this.doctorService.getAllDoctors().subscribe((doctors) => {
       this.doctors = doctors;
+      this.updatePaginatedDoctors();
     });
   }
 
@@ -163,5 +168,29 @@ export class DoctorComponent implements OnInit {
   getSpecialtyName(specialtyId: number): string {
     const specialty = this.specialties.find(s => s.id === specialtyId);
     return specialty ? specialty.name : 'Không xác định';
+  }
+
+  updatePaginatedDoctors(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedDoctors = this.doctors.slice(startIndex, endIndex);
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedDoctors();
+    }
+  }
+  
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.updatePaginatedDoctors();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.doctors.length / this.itemsPerPage);
   }
 }

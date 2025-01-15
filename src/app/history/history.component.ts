@@ -33,6 +33,10 @@ export class HistoryComponent implements OnInit {
     createdAt: new Date,
     updatedAt: new Date,
     }  // Hồ sơ bệnh án đang chọn để chỉnh sửa
+  
+  currentPage: number = 1; // Trang hiện tại
+  itemsPerPage: number = 5; // Số hàng trên mỗi trang
+  paginatedHistories: Histories[] = [];
 
   constructor(private historyService: HistoryService, private authService: AuthService) { }
 
@@ -48,25 +52,19 @@ export class HistoryComponent implements OnInit {
           const decodedToken: any = jwtDecode(token); // Giải mã token
           const userId = decodedToken.sub; 
           this.getDoctorId(userId);
-          }
-    
+        }
     this.loadHistories();
   }
 
   searchHistory(): void {
     const id = this.searchQuery;
-
     if (id) {
-      // Chuyển id sang kiểu số nếu cần
       const historyId = Number(id);
-
-      // Gọi API để tìm hồ sơ bệnh án theo ID
       this.historyService.findHistoryByUserId(historyId).subscribe(
         (history: Histories) => {
           this.selectedHistory = history;
           console.log('Hồ sơ bệnh án tìm được:', history);
         },
-        
       );
     } else {
       console.log('Vui lòng nhập ID hồ sơ bệnh án');
@@ -79,7 +77,6 @@ export class HistoryComponent implements OnInit {
         (doctorId: number) => {
           this.selectedHistory.doctorId = doctorId; // Gán doctorId vào selectedHistory
         },
-        
       );
     }
   }
@@ -91,6 +88,7 @@ export class HistoryComponent implements OnInit {
         this.historyService.getAllHistorys(doctorId).subscribe(
           (data: Histories[]) => {
             this.histories = data;
+            this.updatePaginatedHistories();
           },
           (error) => {
             console.error('Error fetching histories', error);
@@ -103,10 +101,7 @@ export class HistoryComponent implements OnInit {
     );
   }
   
-  
-
   onEditHistory(history: Histories): void {
-
     this.historyService.getHistoryById(history.id).subscribe(
       (data: Histories) => {
         this.selectedHistory = { ...data };  // Cập nhật selectedHistory
@@ -137,7 +132,6 @@ export class HistoryComponent implements OnInit {
       }
     }
 
-
   onDeleteHistory(id: number): void {
     this.historyService.deleteHistory(id).subscribe(
       () => {
@@ -164,7 +158,6 @@ export class HistoryComponent implements OnInit {
           this.resetSelectedHistory();
         });
     } else {
-
       const userId = this.selectedHistory.userId; 
       this.historyService.createHistory(userId, this.selectedHistory)
         .subscribe((history: Histories) => { // Kiểm tra dữ liệu trả về từ backend
@@ -174,8 +167,6 @@ export class HistoryComponent implements OnInit {
     }
   }
   
-
-
 resetSelectedHistory() {
   this.selectedHistory = {
     id: 0,
@@ -190,4 +181,28 @@ resetSelectedHistory() {
   };
 }
 
+updatePaginatedHistories(): void {
+  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  const endIndex = startIndex + this.itemsPerPage;
+  this.paginatedHistories = this.histories.slice(startIndex, endIndex);
+}
+
+previousPage(): void {
+  if (this.currentPage > 1) {
+    this.currentPage--;
+    this.updatePaginatedHistories();
+  }
+}
+
+nextPage(): void {
+  if (this.currentPage < this.totalPages()) {
+    this.currentPage++;
+    this.updatePaginatedHistories();
+    }
+  }
+
+  totalPages(): number {
+  return Math.ceil(this.histories.length / this.itemsPerPage);
+  }
+  
 }

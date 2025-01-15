@@ -83,11 +83,9 @@
                     <div class="row">
                         <div class="col-md-1212 mb-3">
                             <label for="password" class="form-label">Mật khẩu</label>
-                            <input type="password" class="form-control" id="password" [(ngModel)]="newUser.password" name="password" [disabled]="isEditMode" placeholder="Nhập mật khẩu người dùng" >
-                        </div>
-                        
+                            <input type="password" class="form-control" id="password" [(ngModel)]="newUser.password" name="password" placeholder="Nhập mật khẩu người dùng" >
+                        </div>  
                     </div>
-
                     <button type="submit" class="btn btn-primary w-100">{{ isEditMode ? 'Cập nhật' : 'Thêm người dùng' }}</button>
                 </form>
 
@@ -95,7 +93,8 @@
                 <table class="table table-striped shadow-sm">
                     <thead class="table-header">
                         <tr>
-                            <th>Id</th>
+                            <th>#</th>
+                            <th>STT</th>
                             <th>Họ và tên</th>
                             <th>Email</th>
                             <th>Số điện thoại</th>
@@ -106,7 +105,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let user of users">
+                        <tr *ngFor="let user of paginatedUsers; let i = index">
+                            <td>{{ i + 1 }}</td>
                             <td>{{ user.id }}</td>
                             <td>{{ user.userName }}</td>
                             <td>{{ user.email }}</td>
@@ -115,14 +115,23 @@
                             <td>{{ user.gender ? 'Nam' : 'Nữ' }}</td>
                             <td>{{ user.role.roleName }}</td>
                             <td>
-                                <button class="btn btn-warning btn-sm me-2" (click)="editUser(user)">Chỉnh sửa</button>
-                                <button class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">Xóa</button>
+                                <button style="width: 70px; height: 40px;" class="btn btn-warning btn-sm me-2" (click)="editUser(user)">Sửa</button>
+                                <button style="width: 70px; height: 40px;" class="btn btn-danger btn-sm" (click)="deleteUser(user.id)">Xóa</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <div style="display: flex; justify-content: center;">
+                    <button style="border: none; background: none;" (click)="previousPage()" [disabled]="currentPage === 1">
+                      <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    </button>
+                    <span>Trang {{ currentPage }}</span>
+                    <button style="border: none; background: none;" (click)="nextPage()" [disabled]="currentPage === totalPages()">
+                      <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </button>
+                  </div>
             </div>
-
+            
             <app-footer></app-footer>
         </div>
     </div>

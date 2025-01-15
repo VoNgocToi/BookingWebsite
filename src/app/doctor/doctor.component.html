@@ -59,6 +59,7 @@
                 <table class="table table-striped shadow-sm">
                     <thead class="table-header">
                         <tr>
+                            <th>#</th>
                             <th>Họ và tên</th>
                             <th>Email</th>
                             <th>Số điện thoại</th>
@@ -68,19 +69,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr *ngFor="let doctor of doctors">
+                        <tr *ngFor="let doctor of paginatedDoctors; let i = index">
+                            <td>{{ i + 1 }}</td>
                             <td>{{ doctor.name }}</td>
                             <td>{{ doctor.email }}</td>
                             <td>{{ doctor.phoneNumber }}</td>
                             <td>{{ getSpecialtyName(doctor.specialtyId) }}</td>
                             <td>{{ doctor.gender ? 'Nam' : 'Nữ' }}</td>
                             <td>
-                                <button class="btn btn-warning btn-sm me-2" (click)="editDoctor(doctor)">Chỉnh sửa</button>
-                                <button class="btn btn-danger btn-sm" (click)="deleteDoctor(doctor.id)">Xóa</button>
+                                <button style="width: 70px; height: 40px;" class="btn btn-warning btn-sm me-2" (click)="editDoctor(doctor)">Sửa</button>
+                                <button style="width: 70px; height: 40px;" class="btn btn-danger btn-sm" (click)="deleteDoctor(doctor.id)">Xóa</button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
+                <div style="display: flex; justify-content: center;">
+                    <button style="border: none;background: none;" (click)="previousPage()" [disabled]="currentPage === 1">
+                      <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    </button>
+                    <span>Trang {{ currentPage }}</span>
+                    <button style="border: none;background: none;" (click)="nextPage()" [disabled]="currentPage === totalPages()">
+                      <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </button>
+                  </div>
             </div>
 
             <app-footer></app-footer>

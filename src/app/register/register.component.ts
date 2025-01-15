@@ -22,6 +22,7 @@ export class RegisterComponent {
 
   userName: string ='';
   genDer: boolean = true;
+  phoneNumber: string = '';
   address: string = '';
 
   constructor(private authService: AuthService, private router: Router) { }
@@ -38,7 +39,7 @@ export class RegisterComponent {
       return;
     }
 
-    this.authService.registerUser(this.email, this.password, this.retypePassword, this.userName, this.genDer, this.address).subscribe(
+    this.authService.registerUser(this.email, this.password, this.retypePassword, this.userName, this.genDer, this.phoneNumber, this.address).subscribe(
       (response) => {
         Swal.fire({
           title: 'Đăng ký thành công',

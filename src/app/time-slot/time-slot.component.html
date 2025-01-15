@@ -222,7 +222,7 @@
                     </span>
                   </td>
                   <td>
-                    <button class="btn btn-warning btn-sm mr-2"(click)="editTimeSlot(timeslot.id)">Sửa
+                    <button style="width: 20px; height: 20px;" class="btn btn-warning btn-sm mr-2"(click)="editTimeSlot(timeslot.id)">Sửa
                     </button>
                     <button class="btn btn-danger btn-sm"(click)="deleteTimeSlot(timeslot.id)">Xóa
                     </button>
@@ -232,12 +232,12 @@
             </table>
             
           </div>
-          <div>
-            <button (click)="previousPage()" [disabled]="currentPage === 1">
+          <div style="display: flex; justify-content: center;">
+            <button style="border: none; background: none;" (click)="previousPage()" [disabled]="currentPage === 1">
               <i class="fa fa-angle-left" aria-hidden="true"></i>
             </button>
             <span>Trang {{ currentPage }}</span>
-            <button (click)="nextPage()" [disabled]="currentPage === totalPages()">
+            <button style="border: none; background: none;" (click)="nextPage()" [disabled]="currentPage === totalPages()">
               <i class="fa fa-angle-right" aria-hidden="true"></i>
             </button>
           </div>

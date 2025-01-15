@@ -31,6 +31,9 @@ export class UserManagementComponent implements OnInit {
   };
   isEditMode: boolean = false;
   searchQuery: string = '';
+  currentPage: number = 1; // Trang hiện tại
+  itemsPerPage: number = 5; // Số hàng trên mỗi trang
+  paginatedUsers: User[] = [];
 
   constructor(private userService: UserService) {}
 
@@ -41,12 +44,12 @@ export class UserManagementComponent implements OnInit {
   loadUsers() {
     this.userService.getAllUsers().subscribe((data: User[]) => {
       this.users = data;
+      this.updatePaginatedUsers();
     });
   }
 
   addUser() {
     if (!this.validateUserData(this.newUser)) return;
-      
     this.userService.createUser(this.newUser).subscribe((user: User) => {
       this.users.push(user);
       this.newUser = { id: 0, password: '', email: '', userName: '', address: '', gender: true, phoneNumber: '', image: '', createdAt: new Date(), updatedAt: new Date(), role: { id: 0, roleName: '' } };
@@ -55,7 +58,6 @@ export class UserManagementComponent implements OnInit {
 
   updateUser() {
     if (!this.validateUserData(this.newUser)) return;
-
     if (this.newUser.id) {
       this.userService.updateUser(this.newUser.id, this.newUser).subscribe((user: User) => {
         const index = this.users.findIndex(u => u.id === user.id);
@@ -78,6 +80,7 @@ export class UserManagementComponent implements OnInit {
       this.users = this.users.filter(user => user.id !== id);
     });
   }
+
   searchUsers() {
     if (this.searchQuery) {
       this.users = this.users.filter(user =>
@@ -87,14 +90,13 @@ export class UserManagementComponent implements OnInit {
       this.loadUsers();  // Reload tất cả người dùng nếu không tìm kiếm
     }
   }
+
   searchUserById() {
     const userId = Number(this.searchQuery);  // Chuyển đổi searchQuery thành kiểu số
     if (isNaN(userId)) {  // Kiểm tra nếu giá trị không phải là một số hợp lệ
       alert('Vui lòng nhập một ID hợp lệ!');
       return;
-    
     }
-    
     this.userService.getUserById(userId).subscribe(user => {
       if (user) {
         this.newUser = user;  // Gán thông tin người dùng tìm được vào biến newUser
@@ -113,27 +115,22 @@ export class UserManagementComponent implements OnInit {
       alert('Họ và tên phải có ít nhất 3 ký tự.');
       return false;
     }
-
     if (!this.validateEmail(user.email)) {
       alert('Email không hợp lệ. VD: nguoiDung1@gmail.com.vn');
       return false;
     }
-
     if (!this.validatePhoneNumber(user.phoneNumber)) {
       alert('Số điện thoại phải là số từ 10-11 chữ số và bắt đầu bằng 0.');
       return false;
     }
-
     if (!user.password || user.password.length < 6) {
       alert('Mật khẩu phải có ít nhất 6 ký tự.');
       return false;
     }
-
     if (!user.address) {
       alert('Địa chỉ không được để trống.');
       return false;
     }
-
     return true;
   }
 
@@ -147,5 +144,29 @@ export class UserManagementComponent implements OnInit {
   validatePhoneNumber(phoneNumber: string): boolean {
     const phoneRegex = /^0\d{9,10}$/;
     return phoneRegex.test(phoneNumber);
+  }
+
+  updatePaginatedUsers(): void {
+    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    const endIndex = startIndex + this.itemsPerPage;
+    this.paginatedUsers = this.users.slice(startIndex, endIndex);
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.updatePaginatedUsers();
+    }
+  }
+  
+  nextPage(): void {
+    if (this.currentPage < this.totalPages()) {
+      this.currentPage++;
+      this.updatePaginatedUsers();
+    }
+  }
+
+  totalPages(): number {
+    return Math.ceil(this.users.length / this.itemsPerPage);
   }
 }

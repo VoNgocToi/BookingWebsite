@@ -138,20 +138,18 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let history of histories; let i = index">
+                  <tr *ngFor="let history of paginatedHistories; let i = index">
                     <td>{{ i + 1 }}</td>
                     <td>{{ history.userName }}</td>
                     <td>{{ history.doctorName }}</td>
                     <td>{{ history.description }}</td>
                     <td>{{ history.createdAt | date: 'yyyy-MM-dd' }}</td>
                     <td>
-                      <button 
-                        class="btn btn-warning btn-sm mr-2" 
+                      <button style="width: 70px; height: 40px;"class="btn btn-warning btn-sm mr-2" 
                         (click)="onEditHistory(history)">
                         Sửa
                       </button>
-                      <button 
-                        class="btn btn-danger btn-sm" 
+                      <button style="width: 70px; height: 40px;" class="btn btn-danger btn-sm" 
                         (click)="onDeleteHistory(history.id)">
                         Xóa
                       </button>
@@ -159,6 +157,15 @@
                   </tr>
                 </tbody>
               </table>
+              <div style="display: flex; justify-content: center;">
+                <button style="border: none; background: none;" (click)="previousPage()" [disabled]="currentPage === 1">
+                  <i class="fa fa-angle-left" aria-hidden="true"></i>
+                </button>
+                <span>Trang {{ currentPage }}</span>
+                <button style="border: none; background: none;" (click)="nextPage()" [disabled]="currentPage === totalPages()">
+                  <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </button>
+              </div>
             </div>
           </div>
   
