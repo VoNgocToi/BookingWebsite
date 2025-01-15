@@ -93,8 +93,7 @@
                 <table class="table table-striped shadow-sm">
                     <thead class="table-header">
                         <tr>
-                            <th>#</th>
-                            <th>STT</th>
+                            <th>Mã Số</th>
                             <th>Họ và tên</th>
                             <th>Email</th>
                             <th>Số điện thoại</th>
@@ -106,7 +105,6 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let user of paginatedUsers; let i = index">
-                            <td>{{ i + 1 }}</td>
                             <td>{{ user.id }}</td>
                             <td>{{ user.userName }}</td>
                             <td>{{ user.email }}</td>
