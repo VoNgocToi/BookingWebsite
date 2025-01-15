@@ -51,8 +51,12 @@ export class UserManagementComponent implements OnInit {
   addUser() {
     if (!this.validateUserData(this.newUser)) return;
     this.userService.createUser(this.newUser).subscribe((user: User) => {
-      this.users.push(user);
-      this.newUser = { id: 0, password: '', email: '', userName: '', address: '', gender: true, phoneNumber: '', image: '', createdAt: new Date(), updatedAt: new Date(), role: { id: 0, roleName: '' } };
+      this.users.unshift(user);  // Thêm người dùng mới vào đầu danh sách
+
+    this.currentPage = 1;
+
+    this.updatePaginatedUsers();
+    this.newUser = { id: 0, password: '', email: '', userName: '', address: '', gender: true, phoneNumber: '', image: '', createdAt: new Date(), updatedAt: new Date(), role: { id: 0, roleName: '' } };
     });
   }
 

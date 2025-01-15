@@ -76,7 +76,7 @@ export class DoctorComponent implements OnInit {
       return;
     }
     this.doctorService.createDoctors(this.newDoctor).subscribe((newDoctor) => {
-      this.doctors.push(newDoctor);
+      this.doctors.unshift(newDoctor);
       this.updatePaginatedDoctors();
       this.resetForm();
     });

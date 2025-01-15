@@ -69,11 +69,9 @@ export class TimeSlotComponent implements OnInit {
   );
   this.scheduleService.getAllSchedule().subscribe(schedules => {
     this.schedules = schedules;
-    // Gán doctorId là id của bác sĩ đầu tiên (nếu có bác sĩ)
-    
-  }
-);
-    this.loadUsers();
+    }
+  );
+  this.loadUsers();
   }
 
   loadUsers() {
@@ -111,10 +109,28 @@ export class TimeSlotComponent implements OnInit {
   }
 
   // Tạo mới timeSlot
-  createTimeSlot(): void {
+  createTimeSlot() {
+    if (this.isValidTimeSlot()) {
+      const selectedDoctor = this.getSelectedDoctor();
+      if (selectedDoctor) {
+        this.newTimeSlot.doctorId = selectedDoctor.id;
+        if (this.isValidSchedule()) {
+          this.newTimeSlot.scheduleId = Number(this.newTimeSlot.scheduleId);
+          this.createTimeSlotApiCall();
+        } else {
+          console.error('Chưa chọn lịch trình.');
+        }
+      } else {
+        console.error('Không tìm thấy bác sĩ với ID đã chọn.');
+      }
+    }
+  }
+  
+  private isValidTimeSlot(): boolean {
     const startTimeString = this.newTimeSlot.startTime;
     const endTimeString = this.newTimeSlot.endTime;
-  
+    
+    // Kiểm tra định dạng thời gian
     if (startTimeString && /^[0-9]{2}:[0-9]{2}$/.test(startTimeString) && /^[0-9]{2}:[0-9]{2}$/.test(endTimeString)) {
       const [startHour, startMinute] = startTimeString.split(':').map(num => parseInt(num));
       const [endHour, endMinute] = endTimeString.split(':').map(num => parseInt(num));
@@ -124,51 +140,53 @@ export class TimeSlotComponent implements OnInit {
       endTime.setHours(endHour, endMinute, 0, 0);
       this.newTimeSlot.startTime = startTime.toISOString().slice(11, 19);
       this.newTimeSlot.endTime = endTime.toISOString().slice(11, 19);
-  
-      if (this.selectedDoctorId !== null) {
-        const selectedDoctor = this.doctors.find((doctor) => doctor.id === this.selectedDoctorId);
-  
-        if (selectedDoctor) {
-          this.newTimeSlot.doctorId = selectedDoctor.id;
-  
-          if (this.newTimeSlot.scheduleId !== null) {
-            this.newTimeSlot.scheduleId = Number(this.newTimeSlot.scheduleId);
-            // Gọi API để tạo timeSlot
-            this.timeSlotService.createTimeSlots(this.newTimeSlot).subscribe(
-              (createdTimeSlot) => {
-                this.timeSlots.push(createdTimeSlot);
-                this.updatePaginatedTimeSlots(); // Cập nhật danh sách đã phân trang
-                this.newTimeSlot = {
-                  id: 0,
-                  startTime: '',
-                  endTime: '',
-                  doctorId: 0,
-                  doctorName: '',
-                  scheduleId: 0,
-                  scheduleDate: new Date(),
-                  isAvailable: true,
-                  createdAt: new Date(),
-                  updatedAt: new Date()
-                };
-              },
-              (error) => {
-                console.error('Lỗi khi tạo timeSlot:', error);
-              }
-            );
-          } else {
-            console.error('Chưa chọn lịch trình.');
-          }
-        } else {
-          console.error('Không tìm thấy bác sĩ với ID đã chọn.');
-        }
-      } else {
-        console.error('Chưa chọn bác sĩ.');
-      }
+      return true;
     }
-    this.loadUsers();
+    return false;
+  }
+  
+  private getSelectedDoctor() {
+    if (this.selectedDoctorId !== null) {
+      return this.doctors.find((doctor) => doctor.id === this.selectedDoctorId);
+    }
+    return null;
+  }
+  
+  private isValidSchedule(): boolean {
+    return this.newTimeSlot.scheduleId !== null;
+  }
+  
+  private createTimeSlotApiCall() {
+    this.timeSlotService.createTimeSlots(this.newTimeSlot).subscribe(
+      (createdTimeSlot: TimeSlot) => {
+        this.timeSlots.unshift(createdTimeSlot); 
+        this.currentPage = 1;
+        this.updatePaginatedTimeSlots();
+        this.resetTimeSlot();
+      },
+      (error) => {
+        console.error('Lỗi khi tạo timeSlot:', error);
+      }
+    );
+  }
+  
+  private resetTimeSlot() {
+    this.newTimeSlot = {
+      id: 0,
+      startTime: '',
+      endTime: '',
+      doctorId: 0,
+      doctorName: '',
+      scheduleId: 0,
+      scheduleDate: new Date(),
+      isAvailable: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
   }
   
   
+
   getDoctorName(doctorId: number): string {
     const doctor = this.doctors.find(d => d.id === doctorId);
     return doctor ? doctor.name : 'Chưa có bác sĩ';  // Trả về tên bác sĩ hoặc thông báo nếu không tìm thấy
@@ -179,9 +197,6 @@ editTimeSlot(id: number): void {
   const timeSlot = this.timeSlots.find(ts => ts.id === id);
   if (timeSlot) {
     this.editableTimeSlot = { ...timeSlot }; // Tạo một bản sao để chỉnh sửa
-    console.log('gia tri schedules', this.schedules);
-    console.log('gia tri doctors', this.doctors);
-    console.log('editableTimeSlot:', this.editableTimeSlot);
   } else {
     console.error('Không tìm thấy timeSlot với ID:', id);
   }
