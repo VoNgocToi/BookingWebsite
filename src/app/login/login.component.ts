@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../service/auth.service';
-import { Router, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from '../header/header.component';
@@ -22,8 +22,42 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private authService: AuthService, private router: Router, private http: HttpClient) {}
+  isLoggedIn = false;
+  userInfo: any = null;
 
+  constructor(private authService: AuthService, private router: Router, private http: HttpClient,private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    // Kiểm tra lại token sau khi người dùng redirect trở lại trang login
+    this.route.queryParams.subscribe(params => {
+      const token = params['token']; // token từ URL query parameter
+
+      if (token) {
+        this.getGoogleUserInfo(token); // Nếu có token, gọi API Google
+      } else {
+        // Token không có trong URL, kiểm tra localStorage
+        const storedToken = localStorage.getItem('token');
+        if (storedToken) {
+          this.getGoogleUserInfo(storedToken); // Nếu token có trong localStorage, lấy thông tin
+        }
+      }
+    });
+  }
+
+  // Hàm gọi API Google để lấy thông tin người dùng từ token
+  getGoogleUserInfo(token: string): void {
+    const url = `https://www.googleapis.com/oauth2/v3/userinfo?access_token=${token}`;
+    this.http.get(url).subscribe(
+      (response: any) => {
+        console.log('User info:', response);
+        localStorage.setItem('email', response.email);
+        this.router.navigate(['/']); // Redirect sau khi lấy thông tin người dùng
+      },
+      error => {
+        console.error('Error fetching user info:', error);
+      }
+    );
+  }
 
  // Import jwt-decode
 
@@ -39,9 +73,6 @@ onLogin() {
         // Giải mã token để lấy thông tin vai trò
         const decodedToken: any = jwtDecode(token); 
         const roles = decodedToken['roles']; // Lấy mảng roles từ decoded token
-
-        console.log('Decoded Token:', decodedToken);
-        console.log('Roles:', roles);
 
         // Kiểm tra vai trò người dùng
         if (roles && roles.includes('MANAGE')) {

@@ -90,6 +90,7 @@ export class BookingComponent implements OnInit {
           updatedAt: new Date,
         }
       });
+      this.updatePaginatedBookings()
     }
   }
 

@@ -1,56 +1,58 @@
-/* Đặt các cấu hình chung cho container */
-.container {
-    margin-top: 50px;
-    margin-bottom: 50px;
-    padding: 20px;
-  }
-  
-  /* Định dạng thẻ card */
-  .card {
-    border-radius: 10px;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  .card-header {
-    background-color: #f8f8f8;
-    padding: 20px;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .card-header .card-title {
-    font-size: 24px;
-    font-weight: 600;
-    color: #333;
-  }
-  
-  .card-body {
-    padding: 20px;
-    background-color: #fff;
-  }
-  
-  /* Thêm một số cải thiện cho đồ thị */
-  #chart {
-    height: 400px; /* Đặt chiều cao cho biểu đồ */
-    width: 100%; /* Đảm bảo biểu đồ chiếm hết không gian */
-  }
-  
-  /* Định dạng thêm cho các vùng xung quanh biểu đồ */
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f0f0;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .card-header h3 {
-    margin: 0;
-    font-size: 24px;
-    color: #4b4b4b;
-  }
-  
+.container-fluid {
+  background: linear-gradient(135deg, #a8e3eb, #f6f7d7, #cc530d); /* Thêm 3 màu gradient */
+  /* Có thể thay đổi góc và các mã màu tùy thích */
+}
+.card {
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 85%;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.statistic-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.statistic-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.statistic-item {
+  text-align: center;
+  width: 30%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.statistic-item h2 {
+  font-size: 18px;
+  color: #333;
+}
+
+.statistic-item p {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.doctor-statistics-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.doctor-statistics-table th, .doctor-statistics-table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.doctor-statistics-table th {
+  background-color: #f4f4f4;
+}

@@ -140,7 +140,9 @@ export class HistoryComponent implements OnInit {
       (error) => {
         console.error('Error deleting history', error);
       }
+      
     );
+    this.updatePaginatedHistories();
   }
 
   onSelectHistory(history: Histories) {

@@ -70,6 +70,7 @@ export class UserManagementComponent implements OnInit {
         }
         this.isEditMode = false;
         this.newUser = { id: 0, password: '', email: '', userName: '', address: '', gender: true, phoneNumber: '', image: '', createdAt: new Date(), updatedAt: new Date(), role: { id: 0, roleName: '' } };
+        this.updatePaginatedUsers();
       });
     }
   }
@@ -83,6 +84,7 @@ export class UserManagementComponent implements OnInit {
     this.userService.deleteUser(id).subscribe(() => {
       this.users = this.users.filter(user => user.id !== id);
     });
+    this.updatePaginatedUsers()
   }
 
   searchUsers() {
