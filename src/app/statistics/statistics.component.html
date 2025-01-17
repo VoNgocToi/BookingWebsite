@@ -1,58 +1,77 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-md-2">
-            <app-sidebar-admin></app-sidebar-admin>
-        </div>
-        <div class="col-md-10">
-            <app-header></app-header>
-            <div class="card shadow-sm mt-5 mb-5">
-                <div class="statistic-container">
-                    <h1 class="statistic-title">Thống Kê Đặt Hẹn</h1>
-                  
-                    <div class="statistic-summary">
-                      <div class="statistic-item">
-                        <h2>Tổng Số Cuộc Hẹn</h2>
-                        <p>{{ statistics.totalBookings }}</p>
-                      </div>
-                      <div class="statistic-item">
-                        <h2>Số Cuộc Hẹn Hoàn Thành</h2>
-                        <p>{{ statistics.completedBookings }}</p>
-                      </div>
-                      <div class="statistic-item">
-                        <h2>Số Cuộc Hẹn Bị Hủy</h2>
-                        <p>{{ statistics.canceledBookings }}</p>
-                      </div>
-                    </div>
-                  
-                    <div class="statistic-periods">
-                      <div class="statistic-period">
-                        <h3>Thống Kê Theo Tuần</h3>
-                        <p>{{ statistics.weeklyBookings }}</p>
-                      </div>
-                      <div class="statistic-period">
-                        <h3>Thống Kê Theo Tháng</h3>
-                        <p>{{ statistics.monthlyBookings }}</p>
-                      </div>
-                      <div class="statistic-period">
-                        <h3>Thống Kê Theo Năm</h3>
-                        <p>{{ statistics.yearlyBookings }}</p>
-                      </div>
-                    </div>
-                  
-                    <h2 class="doctor-statistics-title">Thống Kê Theo Bác Sĩ</h2>
-                    <table class="doctor-statistics-table">
-                      <tr>
-                        <th>Bác Sĩ</th>
-                        <th>Số Cuộc Hẹn</th>
-                      </tr>
-                      <tr *ngFor="let doctor of statistics.bookingsPerDoctor">
-                        <td>{{ doctor.doctorName }}</td>
-                        <td>{{ doctor.bookings }}</td>
-                      </tr>
-                    </table>
-                  </div>
-            </div>
-              <app-footer></app-footer>
-        </div>
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-2">
+      <app-sidebar-admin></app-sidebar-admin>
     </div>
+    <!-- Nội dung chính -->
+    <div class="col-md-10">
+      <app-header></app-header>
+      <div class="card shadow-sm mt-5 mb-5">
+        <div class="statistic-container">
+          <h1 class="statistic-title">Thống Kê Đặt Hẹn</h1>
+
+          <!-- Hiển thị trạng thái loading -->
+          <div *ngIf="isLoading" class="text-center">
+            <p>Đang tải dữ liệu...</p>
+          </div>
+
+          <!-- Hiển thị lỗi nếu có -->
+          <div *ngIf="errorMessage" class="text-danger text-center">
+            <p>{{ errorMessage }}</p>
+          </div>
+
+          <!-- Hiển thị thống kê -->
+          <div *ngIf="!isLoading && !errorMessage">
+            <div class="statistic-summary">
+              <div class="statistic-item">
+                <h2>Tổng Số Cuộc Hẹn</h2>
+                <p>{{ statistics.totalBookings }}</p>
+              </div>
+              <div class="statistic-item">
+                <h2>Số Cuộc Hẹn Hoàn Thành</h2>
+                <p>{{ statistics.completedBookings }}</p>
+              </div>
+              <div class="statistic-item">
+                <h2>Số Cuộc Hẹn Bị Hủy</h2>
+                <p>{{ statistics.canceledBookings }}</p>
+              </div>
+            </div>
+
+            <div class="statistic-periods">
+              <div class="statistic-period">
+                <h3>Thống Kê Theo Tuần</h3>
+                <p>{{ statistics.weeklyBookings }}</p>
+              </div>
+              <div class="statistic-period">
+                <h3>Thống Kê Theo Tháng</h3>
+                <p>{{ statistics.monthlyBookings }}</p>
+              </div>
+              <div class="statistic-period">
+                <h3>Thống Kê Theo Năm</h3>
+                <p>{{ statistics.yearlyBookings }}</p>
+              </div>
+            </div>
+
+            <h2 class="doctor-statistics-title">Thống Kê Theo Bác Sĩ</h2>
+            <table class="doctor-statistics-table table">
+              <thead>
+                <tr>
+                  <th>Bác Sĩ</th>
+                  <th>Số Cuộc Hẹn</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let doctor of statistics.bookingsPerDoctor">
+                  <td>{{ doctor.doctorId }}</td>
+                  <td>{{ doctor.bookings }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <app-footer></app-footer>
+    </div>
+  </div>
 </div>
