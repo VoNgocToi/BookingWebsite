@@ -56,7 +56,6 @@ export const routes: Routes = [
           { path: 'specialty', component: SpecialtyComponent },
           { path: 'time-slot', component: TimeSlotComponent },
           { path: 'doctor', component: DoctorComponent },
-          { path: 'statistics', component: StatisticsComponent },
           { path: 'tong-quan', component: TongQuanComponent },
           { path: 'doctor-schedule', component: DoctorScheduleComponent },
           { path: 'history', component: HistoryComponent },
