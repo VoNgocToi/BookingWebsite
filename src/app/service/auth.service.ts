@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { error } from 'console';
 import { jwtDecode } from 'jwt-decode';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -22,6 +23,10 @@ export class AuthService {
   }
 
   loginUser(email: string, password: string): Observable<any> {
+    if (!password.trim()) { 
+      return throwError(() => new Error('Mật khẩu trống')); 
+    }
+  
     const body = { email, password };
     return this.http.post<string>('http://localhost:8080/api/auth/login', body, {
       headers: new HttpHeaders().set('Content-Type', 'application/json'),
@@ -37,7 +42,7 @@ export class AuthService {
             localStorage.setItem('email', email);
           }
         } catch (error) {
-          console.error("loi te le", error);
+          console.error("Error parsing response", error);
         }
       })
     );

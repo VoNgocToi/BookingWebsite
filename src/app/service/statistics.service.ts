@@ -8,32 +8,11 @@ import { AuthService } from './auth.service';
 })
 export class StatisticsService {
 
-  private apiUrl = 'http://localhost:8080/api/statistics';
+  private apiUrl = 'http://localhost:8080/api/statistics'; // URL API backend
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(private http: HttpClient) {}
 
-  private getAuthHeaders(): HttpHeaders {
-    const token = this.authService.getToken();  // Lấy token từ AuthService
-    return new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  }
-
-  getStatisticsByStatus(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<any>(`${this.apiUrl}/status`, { headers });
-  }
-
-  getStatisticsByDay(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<any>(`${this.apiUrl}/daily`, { headers });
-  }
-
-  getStatisticsByMonth(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<any>(`${this.apiUrl}/monthly`, { headers });
-  }
-
-  getStatisticsByYear(): Observable<any> {
-    const headers = this.getAuthHeaders();
-    return this.http.get<any>(`${this.apiUrl}/yearly`, { headers });
+  getStatisticsOverview(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/overview`);
   }
 }

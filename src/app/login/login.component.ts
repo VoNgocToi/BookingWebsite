@@ -72,17 +72,17 @@ onLogin() {
 
         // Giải mã token để lấy thông tin vai trò
         const decodedToken: any = jwtDecode(token); 
-        const roles = decodedToken['roles']; // Lấy mảng roles từ decoded token
+        const roles = decodedToken['roles']; 
 
         // Kiểm tra vai trò người dùng
         if (roles && roles.includes('MANAGE')) {
-          this.router.navigate(['/admindb']); // Chuyển hướng đến trang admin
+          this.router.navigate(['/admindb']); 
         }
         if (roles && roles.includes('STAFF')) {
-          this.router.navigate(['/doctordb']); // Chuyển hướng đến trang admin
+          this.router.navigate(['/doctordb']); 
         }
         if (roles && roles.includes('CUST')) {
-          this.router.navigate(['/home']); // Chuyển hướng đến trang admin
+          this.router.navigate(['/home']); 
         }
         
       } else {

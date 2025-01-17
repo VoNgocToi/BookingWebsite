@@ -157,7 +157,7 @@ export class TimeSlotComponent implements OnInit {
       (createdTimeSlot: TimeSlot) => {
         this.timeSlots.unshift(createdTimeSlot); 
         this.currentPage = 1;
-        this.updatePaginatedTimeSlots();
+        this.loadUsers()
         this.resetTimeSlot();
       },
       (error) => {
